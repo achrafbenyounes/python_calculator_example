@@ -53,7 +53,7 @@ class Calculator(QtWidgets.QWidget):
         self.grid_layout.addWidget(self.btn_eq, 6, 3, 1, 1)
 
         for i in range(self.grid_layout.count()):
-            widget = self.grid_layout.itemAt(i).widget
+            widget = self.grid_layout.itemAt(i).widget()
             if isinstance(widget, QtWidgets.QPushButton):
                 widget.setFixedSize(64, 64)
     
