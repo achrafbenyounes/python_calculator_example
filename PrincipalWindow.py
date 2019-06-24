@@ -67,6 +67,11 @@ class Calculator(QtWidgets.QWidget):
             # We use the function partial from functools module to pass parameter to a function
             btn_number.clicked.connect(partial(self.btnNumberPressed, btn_number.text()))
         self.btn_del.clicked.connect(self.cleanResult)
+        self.btn_minus.clicked.connect(partial(self.btnOperationPressed, str(self.btn_minus.text())))
+        self.btn_plus.clicked.connect(partial(self.btnOperationPressed, str(self.btn_plus.text())))
+        self.btn_mult.clicked.connect(partial(self.btnOperationPressed, str(self.btn_mult.text())))
+        self.btn_div.clicked.connect(partial(self.btnOperationPressed, str(self.btn_div.text())))
+        self.btn_eq.clicked.connect(self.calculOperation)
 
     def btnNumberPressed(self, button):
         """function called when the user clicks in number (0-9) """
@@ -81,12 +86,33 @@ class Calculator(QtWidgets.QWidget):
     
     def cleanResult(self):
 	    """Reset the text in result editline and operation editline widget"""
-        
-	    self.le_result.setText('0')
-	    self.le_operation.setText('') 
-    
-    
 
+	    self.le_result.setText('0')
+	    self.le_operation.setText('')
+    
+    def btnOperationPressed(self, operation):
+        """	Function called when the user clicks on some operation key (+, -, /, *)"""
+		# Get the line edit operation
+        operationText = str(self.le_operation.text())
+		# Get the text value of result edit line widget
+        result = str(self.le_result.text())
+		# Sum the current operation with the result text and add in the end the chosen operation 
+        self.le_operation.setText(operationText + result + operation)
+		# Rest lineEdit result
+        self.le_result.setText('0')
+    
+    def calculOperation(self):
+        """Calculate the final result when we click in the = sign"""
+        # Get the text in the line edit result
+        result = str(self.le_result.text())
+        # Add the current value of line edit result to the value of line edit operation
+        self.le_operation.setText(self.le_operation.text() + result)
+
+        # Evaluate the result of the operation
+        result_operation = eval(str(self.le_operation.text()))
+
+        # Affect the final result to result line edit widget
+        self.le_result.setText(str(result_operation))
 
 app = QtWidgets.QApplication([])
 calculaor_window = Calculator()
