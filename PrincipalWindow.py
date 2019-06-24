@@ -66,6 +66,7 @@ class Calculator(QtWidgets.QWidget):
         for btn_number in self.btn_numbers:
             # We use the function partial from functools module to pass parameter to a function
             btn_number.clicked.connect(partial(self.btnNumberPressed, btn_number.text()))
+        self.btn_del.clicked.connect(self.cleanResult)
 
     def btnNumberPressed(self, button):
         """function called when the user clicks in number (0-9) """
@@ -77,6 +78,12 @@ class Calculator(QtWidgets.QWidget):
             self.le_result.setText(button)
         else:
             self.le_result.setText(result + button)
+    
+    def cleanResult(self):
+	    """Reset the text in result editline and operation editline widget"""
+        
+	    self.le_result.setText('0')
+	    self.le_operation.setText('') 
     
     
 
