@@ -1,4 +1,5 @@
 from PySide2 import QtWidgets
+from functools import partial
 
 class Calculator(QtWidgets.QWidget):
     def __init__(self):
@@ -51,15 +52,34 @@ class Calculator(QtWidgets.QWidget):
         self.grid_layout.addWidget(self.btn_0, 6, 1, 1, 1)
         self.grid_layout.addWidget(self.btn_point, 6, 2, 1, 1)
         self.grid_layout.addWidget(self.btn_eq, 6, 3, 1, 1)
+        self.btn_numbers = []
 
         for i in range(self.grid_layout.count()):
             widget = self.grid_layout.itemAt(i).widget()
             if isinstance(widget, QtWidgets.QPushButton):
                 widget.setFixedSize(64, 64)
+                if widget.text().isdigit():
+                    self.btn_numbers.append(widget)
+
+    # This function make a connection between the signal applied in a widget and its relative python function called
+    def setup_connections(self):
+        for btn_number in self.btn_numbers:
+            # We use the function partial from functools module to pass parameter to a function
+            btn_number.clicked.connect(partial(self.btnNumberPressed, btn_number.text()))
+
+    def btnNumberPressed(self, button):
+        """function called when the user clicks in number (0-9) """
+
+        """Get the default value text of the result line edit widget"""
+        result = str(self.le_result.text())
+
+        if result == '0':
+            self.le_result.setText(button)
+        else:
+            self.le_result.setText(result + button)
+    
     
 
-    def setup_connections(self):
-        pass
 
 app = QtWidgets.QApplication([])
 calculaor_window = Calculator()
