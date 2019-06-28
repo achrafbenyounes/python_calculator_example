@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtCore, QtGui
 from functools import partial
 
 class Calculator(QtWidgets.QWidget):
@@ -8,7 +8,9 @@ class Calculator(QtWidgets.QWidget):
         self.setup_ui()
         self.setup_connections()
 
-    
+        # Add shortcut for closing the application by clicking in 'Esc' button
+        QtWidgets.QShortcut(QtGui.QKeySequence('Esc'), self, self.close)
+
     def setup_ui(self):
         self.le_operation = QtWidgets.QLineEdit()
         self.le_result = QtWidgets.QLineEdit('0')
