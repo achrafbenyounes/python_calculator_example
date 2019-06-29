@@ -7,9 +7,7 @@ class Calculator(QtWidgets.QWidget):
         self.setWindowTitle("My Super Calculator")
         self.setup_ui()
         self.setup_connections()
-
-        # Add shortcut for closing the application by clicking in 'Esc' button
-        QtWidgets.QShortcut(QtGui.QKeySequence('Esc'), self, self.close)
+        self.setup_shortcuts_keyboard()
 
     def setup_ui(self):
         self.le_operation = QtWidgets.QLineEdit()
@@ -115,6 +113,19 @@ class Calculator(QtWidgets.QWidget):
 
         # Affect the final result to result line edit widget
         self.le_result.setText(str(result_operation))
+    
+    # Function to handle number shortcuts keyboard
+    def setup_shortcuts_keyboard(self):
+        for btn in range(10):
+            # We call the function partial to pass argument to the function btnNumberPressed()
+            QtWidgets.QShortcut(QtGui.QKeySequence(str(btn)), self, partial(self.btnNumberPressed, str(btn)))
+
+        QtWidgets.QShortcut(QtGui.QKeySequence(self.btn_plus.text()), self, partial(self.btnOperationPressed, (self.btn_plus.text())))
+        QtWidgets.QShortcut(QtGui.QKeySequence(self.btn_minus.text()), self, partial(self.btnOperationPressed, (self.btn_minus.text())))
+        QtWidgets.QShortcut(QtGui.QKeySequence(self.btn_mult.text()), self, partial(self.btnOperationPressed, (self.btn_mult.text())))
+        QtWidgets.QShortcut(QtGui.QKeySequence('Enter'), self, self.calculOperation)
+        # Add shortcut for closing the application by clicking in 'Esc' button
+        QtWidgets.QShortcut(QtGui.QKeySequence('Esc'), self, self.close)
 
 app = QtWidgets.QApplication([])
 calculaor_window = Calculator()
